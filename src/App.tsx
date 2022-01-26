@@ -2,11 +2,13 @@ import React from "react";
 import reactLogo from "./react-logo.svg";
 import nearLogo from "./near-logo.svg";
 import "./App.css";
+import Nav from "./Nav";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <Nav />
         <div className="columns">
           <div>
             <img src={reactLogo} className="App-logo" alt="React" />
