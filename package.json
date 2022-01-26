@@ -1,47 +1,27 @@
 {
   "name": "cra-template-near",
   "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "keywords": [
+    "react",
+    "create-react-app",
+    "template",
+    "typescript",
+    "near"
+  ],
+  "description": "A NEAR template for Create React App based on the TypeScript template.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AhaLabs/cra-template-near"
   },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
-    "@types/react": "^17.0.20",
-    "@types/react-dom": "^17.0.9",
-    "react-scripts": "5.0.0",
-    "typescript": "^4.4.2"
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
   },
-  "dependencies": {
-    "buffer": "^6.0.3",
-    "near-api-js": "0.44.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "web-vitals": "^2.1.0"
+  "bugs": {
+    "url": "https://github.com/AhaLabs/cra-template-near/issues"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "files": [
+    "template",
+    "template.json"
+  ]
 }
