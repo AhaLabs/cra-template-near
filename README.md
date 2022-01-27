@@ -7,11 +7,11 @@ To use this template, add `--template @ahalabs` when creating a new app.
 For example:
 
 ```sh
-npx create-react-app my-app --template @ahalabs
-
-# or
-
-yarn create react-app my-app --template @ahalabs
+npx create-react-app my-near-app --template @ahalabs
+```
+or
+```
+yarn create react-app my-near-app --template @ahalabs
 ```
 
 For more information, please refer to:
