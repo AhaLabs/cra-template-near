@@ -1,5 +1,5 @@
 {
-  "name": "cra-template-near",
+  "name": "@ahalabs/cra-template",
   "version": "0.1.0",
   "keywords": [
     "react",
@@ -8,7 +8,7 @@
     "typescript",
     "near"
   ],
-  "description": "A NEAR template for Create React App based on the TypeScript template.",
+  "description": "A minimal NEAR template for Create React App using TypeScript",
   "repository": {
     "type": "git",
     "url": "https://github.com/AhaLabs/cra-template-near"
