@@ -29,24 +29,30 @@ export const wallet = new naj.WalletConnection(
 );
 
 /**
- * Interface to a contract.
+ * Make a view call to a NEAR smart contract.
+ * @see {@link https://docs.near.org/docs/develop/front-end/rpc#call-a-contract-function}
  *
- * If you're familiar with ABIs in Ethereum: sorry, NEAR doesn't have them! (yet)
+ * near-api-js requires instantiating an "account" object, but this is NOT
+ * used to sign view functions. This `view` function will instantiate an
+ * account object for the provided `contract`, essentially causing it to view
+ * itself.
  *
- * You need to know the contract's interface. When you instantiate the contract
- * here, you can specify view methods (those you'd check with `near view` in
- * NEAR CLI) and change methods (those you'd call with `near call` in NEAR CLI).
- *
- * You can always skip instantiating a `naj.Contract` altogether and call
- * `wallet.account().viewFunction()` and `wallet.account().functionCall()`
- * directly. This is what `naj.Contract` does under the hood, and these
- * lower-level functions have more explicit (and typed!) APIs.
+ * @param contract NEAR account where the contract is deployed
+ * @param method The view-only method (no state mutations) name on the contract as it is written in the contract code
+ * @param args Any arguments to the view contract method, wrapped in JSON
+ * @param options.parse Parse the result of the call. Receives a Buffer (bytes array) and converts it to any object. By default result will be treated as json.
+ * @param options.stringify Convert input arguments into a bytes array. By default the input is treated as a JSON.
+ * @returns {Promise<any>}
  */
-export const contract = new naj.Contract(
-  wallet.account(),
-  process.env.REACT_APP_CONTRACT_NAME!,
-  {
-    viewMethods: ["getMessages"],
-    changeMethods: ["addMessage"],
-  }
-);
+export const view = async (
+  contract: string,
+  method: string,
+  args: Record<string, any> = {},
+  options: {
+    parse?: (response: Uint8Array) => any;
+    stringify?: (input: any) => Buffer;
+  } = {}
+): Promise<any> => {
+  const account = await near.account(contract);
+  return account.viewFunction(contract, method, args, options);
+};
