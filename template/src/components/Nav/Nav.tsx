@@ -1,7 +1,7 @@
 import React from "react";
 import reactLogo from "./react-logo.svg";
 import nearLogo from "./near-logo.svg";
-import { wallet } from "../../utils/near";
+import { wallet } from "../../near";
 import pkg from "../../../package.json";
 import styles from "./Nav.module.css";
 
