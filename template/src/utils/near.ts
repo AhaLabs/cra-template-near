@@ -67,30 +67,21 @@ export async function view(
  * @param contract NEAR account where the contract is deployed
  * @param method The method name on the contract as it is written in the contract code
  * @param args Any arguments to the method, as an object
- * @param options.gas The default gas amount used by near-api-js is 30Tgas. You can send up to 300Tgas by including `gas: Gas.parse('300 Tgas')`
- * @param options.attachedDeposit
- * @param options.walletMeta
- * @param options.walletCallbackUrl
+ * @param options.gas Max amount of gas that method call can use; default is 30 Tgas (roughly 30ms of processing time), max allowed is 300 Tgas; can include with `Gas.parse('150 Tgas')
+ * @param options.attachedDeposit Amount of NEAR (in yoctoNEAR) to send together with the call, can include with `NEAR.parse('0.1')`
+ * @param options.walletMeta Metadata to send the NEAR Wallet if using it to sign transactions.
+ * @param options.walletCallbackUrl Callback url to send the NEAR Wallet if using it to sign transactions.
  * @param options.stringify Convert input arguments into a bytes array. By default the input is treated as a JSON. This is useful if the contract accepts Borsh (see https://borsh.io)
- * @returns {Promise<any>}
  */
 export async function call(
-  /** The NEAR account id where the contract is deployed */
   contract: string,
-  /** The name of the method to invoke as it is written in the contract code */
   method: string,
-  /** Any arguments to the method, as an object */
   args: Record<string, any> = {},
   options?: {
-    /** Max amount of gas that method call can use; default is 30 Tgas (roughly 30ms of processing time), max allowed is 300 Tgas; can include with `Gas.parse('150 Tgas')` */
     gas?: Gas;
-    /** Amount of NEAR (in yoctoNEAR) to send together with the call, can include with `NEAR.parse('0.1')` */
     attachedDeposit?: NEAR;
-    /** Metadata to send the NEAR Wallet if using it to sign transactions.  */
     walletMeta?: string;
-    /** Callback url to send the NEAR Wallet if using it to sign transactions. */
     walletCallbackUrl?: string;
-    /** Convert input arguments into a bytes array. By default the input is treated as a JSON. This is useful if the contract accepts Borsh (see https://borsh.io) */
     stringify?: (input: any) => Buffer;
   }
 ): Promise<void> {

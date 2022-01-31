@@ -53,22 +53,23 @@ export async function getMessages(): Promise<Message[]> {
  *
  * If an `attachedDeposit` of at least 0.01 NEAR is included, the message will
  * be set as `premium`.
+ *
+ * @param args.text The text of the message
+ * @param options.attachedDeposit Send at least 0.01 NEAR (`NEAR.parse('0.1')`) for the message to be considered "premium"
+ * @param options.gas Max amount of gas that method call can use; default is 30 Tgas (roughly 30ms of processing time), max allowed is 300 Tgas; can include with `Gas.parse('150 Tgas')
+ * @param options.walletMeta Metadata to send the NEAR Wallet if using it to sign transactions.
+ * @param options.walletCallbackUrl Callback url to send the NEAR Wallet if using it to sign transactions.
+ * @param options.stringify Convert input arguments into a bytes array. By default the input is treated as a JSON. This is useful if the contract accepts Borsh (see https://borsh.io)
  */
 export async function addMessage(
   args: {
-    /** The text of the message */
     text: string;
   },
   options?: {
-    /** Max amount of gas that method call can use; default is 30 Tgas (roughly 30ms of processing time), max allowed is 300 Tgas; can include with `Gas.parse('150 Tgas')` */
-    gas?: Gas;
-    /** Send at least 0.01 NEAR (`NEAR.parse('0.1')`) for the message to be considered "premium" */
     attachedDeposit?: NEAR;
-    /** Metadata to send the NEAR Wallet if using it to sign transactions.  */
+    gas?: Gas;
     walletMeta?: string;
-    /** Callback url to send the NEAR Wallet if using it to sign transactions. */
     walletCallbackUrl?: string;
-    /** Convert input arguments into a bytes array. By default the input is treated as a JSON. This is useful if the contract accepts Borsh (see https://borsh.io) */
     stringify?: (input: any) => Buffer;
   }
 ): Promise<void> {
