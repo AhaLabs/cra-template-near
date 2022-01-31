@@ -26,6 +26,9 @@ export function App() {
             <code>src/components/Nav/Nav.tsx</code>
           </li>
           <li>
+            <code>src/contracts/guest-book.ts</code>
+          </li>
+          <li>
             <code>src/components/App/App.tsx</code>
           </li>
         </ul>
