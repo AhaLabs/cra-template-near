@@ -1,67 +1,76 @@
+import * as naj from "near-api-js";
 import { Gas, NEAR } from "near-units";
 import { Buffer } from "buffer";
-import { view, wallet } from "../utils/near";
-
-// We *could* use `process.env.REACT_APP_CONTRACT_NAME` in this file, since the
-// template started with that environment variable as `guest-book.testnet`.
-//
-// BUT, the idea of files in `src/contracts` is that they each wrap a specific
-// contract. If the env var `REACT_APP_CONTRACT_NAME` changes, this file is
-// still a wrapper around the guest book contract.
-const CONTRACT = "guest-book.testnet";
+import { call, view, wallet } from "../utils/near";
 
 /**
- * Fully-typed interface to the guest-book.testnet contract
- * (see https://github.com/near-examples/guest-book)
+ * The contract wrapped by this file.
+ * (This is the contract used in https://github.com/near-examples/guest-book)
  *
- * If you're familiar with ABIs in Ethereum: sorry, NEAR doesn't have them! (yet)
+ * We *could* use `process.env.REACT_APP_CONTRACT_NAME` in this file, since the
+ * template started with that environment variable set to `guest-book.testnet`.
  *
- * `naj.Contract` gives you the ability to do this:
- *
- *     export const GuestBook = new naj.Contract(
- *       wallet.account(),
- *       process.env.REACT_APP_CONTRACT_NAME!,
- *       {
- *         viewMethods: ["getMessages"],
- *         changeMethods: ["addMessage"],
- *       }
- *     );
- *
- * But this comes with the drawback that `GuestBook.addMessage` and
- * `GuestBook.getMessages` have no typing. Having good TypeScript types will
- * make it easier to use and collaborate on your code, so below is an
- * alternative way.
+ * BUT, the idea of files in `src/contracts` is that they each wrap a specific
+ * contract. If the env var `REACT_APP_CONTRACT_NAME` changes, this file is
+ * still a wrapper around the guest book contract.
  */
-interface Message {
+export const CONTRACT_NAME = "guest-book.testnet";
+
+/**
+ * This is a Contract object instantiated using near-api-js.
+ *
+ * But this does not provide any TypeScript types! Using this approach makes it
+ * hard for you and your collaborators to tell what arguments you can pass to
+ * `getMessages` and `addMessage`.
+ *
+ * See other exports for a fully-typed approach instead.
+ */
+export const Untyped = new naj.Contract(wallet.account(), CONTRACT_NAME, {
+  viewMethods: ["getMessages"],
+  changeMethods: ["addMessage"],
+});
+
+/**
+ * The data structure returned by `getMessages`
+ */
+export interface Message {
   premium: boolean;
   sender: string;
   text: string;
 }
 
+/**
+ * Get most recent 10 messages
+ */
 export async function getMessages(): Promise<Message[]> {
-  return view(CONTRACT, "getMessages");
+  return view(CONTRACT_NAME, "getMessages");
 }
 
+/**
+ * Add a new message to the guest book.
+ *
+ * Whoever is signed in (`wallet.account()`) will be set as the `sender`
+ *
+ * If an `attachedDeposit` of at least 0.01 NEAR is included, the message will
+ * be set as `premium`.
+ */
 export async function addMessage(
   args: {
+    /** The text of the message */
     text: string;
   },
   options?: {
+    /** Max amount of gas that method call can use; default is 30 Tgas (roughly 30ms of processing time), max allowed is 300 Tgas; can include with `Gas.parse('150 Tgas')` */
     gas?: Gas;
+    /** Send at least 0.01 NEAR (`NEAR.parse('0.1')`) for the message to be considered "premium" */
     attachedDeposit?: NEAR;
+    /** Metadata to send the NEAR Wallet if using it to sign transactions.  */
     walletMeta?: string;
+    /** Callback url to send the NEAR Wallet if using it to sign transactions. */
     walletCallbackUrl?: string;
+    /** Convert input arguments into a bytes array. By default the input is treated as a JSON. This is useful if the contract accepts Borsh (see https://borsh.io) */
     stringify?: (input: any) => Buffer;
   }
 ): Promise<void> {
-  const currentUser = wallet.account();
-  if (!currentUser) {
-    throw new Error("You must sign in before you can add a message");
-  }
-  await currentUser.functionCall({
-    contractId: CONTRACT,
-    methodName: "addMessage",
-    args,
-    ...(options ?? {}),
-  });
+  return call(CONTRACT_NAME, "addMessage", args, options);
 }
