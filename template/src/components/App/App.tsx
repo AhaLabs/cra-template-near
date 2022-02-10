@@ -1,6 +1,6 @@
 import React from "react";
 import { Nav } from "../Nav";
-import * as GuestBook from "../../contracts/guest-book";
+import { GuestBook } from "../../near/contracts";
 
 export function App() {
   React.useEffect(() => {
